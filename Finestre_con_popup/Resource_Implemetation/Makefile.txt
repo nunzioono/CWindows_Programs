@@ -1,0 +1,11 @@
+main.exe: main.o resource.o
+gcc -o main main.o resource.o
+
+main.o: main.c resource.h
+gcc -c main.c resource.h
+
+resource.o: resource.rc
+windres -i resource.rc
+
+clean:
+del *.o *.cgh
