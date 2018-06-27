@@ -1,0 +1,12 @@
+#include <windows.h>
+#include "resource.h"
+
+IDD_TOOLBAR DIALOGEX 0, 0, 98, 52
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "La mia Toolbar"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Premi questo bottone",IDC_PRESS,7,7,84,14
+    PUSHBUTTON      "&Oppure questo",IDC_OTHER,7,31,84,14
+END

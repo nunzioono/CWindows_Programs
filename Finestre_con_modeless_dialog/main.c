@@ -3,45 +3,25 @@
     
 const char g_szClassName[] = "myWindowClass";
 
-BOOL CALLBACK ToolDlgProc(HWND hwnd, UINT Message, WPARAM wParam,
-                    LPARAM lParam)
+BOOL CALLBACK AboutDlgProc(HWND hwnd, UINT Message, WPARAM wParam,
+                LPARAM lParam)
 {
-    HWND g_hToolbar = NULL;
-    
     switch(Message)
     {
-        case WM_CREATE:
-        g_hToolbar = CreateDialog(GetModuleHandle(NULL),
-                                  MAKEINTRESOURCE(IDD_TOOLBAR),
-            hwnd, ToolDlgProc);
-        if(g_hToolbar != NULL)
-        {
-            ShowWindow(g_hToolbar, SW_SHOW);
-        }
-        else
-        {
-            MessageBox(hwnd, "CreateDialog ha restituito NULL", "Attenzione!", MB_OK | MB_ICONINFORMATION);        }
-        break;
-        case WM_DESTROY:
-            DestroyWindow(g_hToolbar);
-            PostQuitMessage(0);
-        break;
+        case WM_INITDIALOG:
+
+        return TRUE;
         case WM_COMMAND:
             switch(LOWORD(wParam))
-           {
-                case IDC_PRESS:
-                    MessageBox(hwnd, "Salve!", "Questo è un messaggio",
-                        MB_OK | MB_ICONEXCLAMATION);
+            {
+                case IDOK:
+                    EndDialog(hwnd, IDOK);
                 break;
-                case IDC_OTHER:
-                    MessageBox(hwnd, "Arrivederci!",
-                        "Questo è un altro messaggio",
-                        MB_OK | MB_ICONEXCLAMATION);case WM_DESTROY:
-                    DestroyWindow(g_hToolbar);
-                    PostQuitMessage(0);
+                case IDCANCEL:
+                    EndDialog(hwnd, IDCANCEL);
                 break;
             }
-        break
+        break;
         default:
             return FALSE;
     }
@@ -51,19 +31,7 @@ BOOL CALLBACK ToolDlgProc(HWND hwnd, UINT Message, WPARAM wParam,
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch(msg)
-    {    
-        case WM_COMMAND:
-        switch(LOWORD(wParam))
-        {
-            case ID_DIALOG_SHOW:
-                ShowWindow(g_hToolbar, SW_SHOW);
-            break;
-            case ID_DIALOG_HIDE:
-                ShowWindow(g_hToolbar, SW_HIDE);
-            break;
-            //... altri handlers di comandi
-        }
-        break;
+    {
         case WM_LBUTTONDOWN:
             DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_ABOUT), hwnd,AboutDlgProc);
         case WM_CLOSE:
@@ -75,16 +43,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         default:
             return DefWindowProc(hwnd, msg, wParam, lParam);
     }
-    
-    while(GetMessage(&Msg, NULL, 0, 0))
-    {
-        if(!IsDialogMessage(g_hToolbar, &Msg))
-        {
-            TranslateMessage(&Msg);
-            DispatchMessage(&Msg);
-        }
-    }
-    
     return 0;
 }
 
